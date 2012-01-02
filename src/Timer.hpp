@@ -12,22 +12,22 @@
 class Timer {
     
 public:
-    Timer(rcString inName);
-    ~Timer();
+  Timer(rcString inName);
+  ~Timer();
 
-    static String GetReport(int precision = 2);
+  static String GetReport(int precision = 2);
 
 private:
-    static std::vector<String> sTasks;
-    static std::map<String, Uint32> sTaskCounters;
-    static std::map<String, double> sSumTimings;
-    static std::map<String, double> sMinTimings;
-    static std::map<String, double> sMaxTimings;
-    
-    bool mIsInitialized;
-    time_t mStartTime;
-    time_t mEndTime;
-    cString mTaskName;
+  static std::vector<String> sTasks;
+  static std::map<String, Uint32> sTaskCounters;
+  static std::map<String, double> sSumTimings;
+  static std::map<String, double> sMinTimings;
+  static std::map<String, double> sMaxTimings;
+
+  bool mIsInitialized;
+  time_t mStartTime;
+  time_t mEndTime;
+  cString mTaskName;
 };
 
 #endif

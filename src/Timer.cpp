@@ -16,7 +16,7 @@ Timer::Timer(rcString inName):
   mIsInitialized(true),
   mTaskName(inName)
 {
-  if (std::find(sTasks.begin(), sTasks.end(), inName) == sTasks.end()) 
+  if (std::find(sTasks.begin(), sTasks.end(), inName) == sTasks.end())
   {
     sTasks.push_back(inName);
     sTaskCounters[inName] = 0;
