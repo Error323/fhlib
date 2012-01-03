@@ -6,8 +6,13 @@
 #include <map>
 #include <ctime>
 
-#define TIMER_FUNC() TIMER(__PRETTY_FUNCTION__)
-#define TIMER(name) Timer t(name)
+#define PROFILE_FUNCTION() PROFILE(__PRETTY_FUNCTION__)
+
+#ifdef ENABLE_PROFILING
+#define PROFILE(name) Timer t(name)
+#else
+#define PROFILE(name)
+#endif
 
 class Timer {
     
@@ -15,7 +20,8 @@ public:
   Timer(rcString inName);
   ~Timer();
 
-  static String GetReport(int precision = 2);
+  static String GetReport(int inPrecision = 2);
+  static String SpacePadding(rcString inString, int inSpaces);
 
 private:
   static std::vector<String> sTasks;

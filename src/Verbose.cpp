@@ -6,6 +6,7 @@
 std::map<Verbose::Level, String> Verbose::sLevels;
 std::ofstream                    Verbose::sStream;
 Verbose*                         Verbose::sInstance = NULL;
+bool                             Verbose::sShouldUseColor = false;
 
 #ifdef DEBUG
 Uint32 Verbose::sMinLevel = Verbose::DBG;
@@ -22,7 +23,7 @@ Uint32 Verbose::sOutput = SCREEN;
 Verbose::Verbose():
   mIsStartOfLine(true)
 {
-  mShouldUseColor = ShouldUseColor();
+  sShouldUseColor = ShouldUseColor();
 }
 
 Verbose::~Verbose()
@@ -66,8 +67,8 @@ Verbose& Verbose::Print(rcString inMsg, Level inLevel)
   if (sOutput & SCREEN)
   {
     std::string output;
-    if (mShouldUseColor)
-      output = Colorize(inMsg, inLevel);
+    if (sShouldUseColor)
+      output = ColorizeLevel(inMsg, inLevel);
     else if (mIsStartOfLine)
       output = Prefix(inLevel) + inMsg;
     else
@@ -99,7 +100,7 @@ String Verbose::Prefix(Level inLevel)
   return "[" + sLevels[inLevel] + "] ";
 }
 
-String Verbose::Colorize(rcString inMsg, Verbose::Level inLevel)
+String Verbose::ColorizeLevel(rcString inMsg, Verbose::Level inLevel)
 {
   std::stringstream s;
   s << "\033[";
@@ -113,6 +114,23 @@ String Verbose::Colorize(rcString inMsg, Verbose::Level inLevel)
     default:  s << REGULAR << ";" << CYAN;   break;
   }
   s << "m" << inMsg << "\033[0m";
+
+  return s.str();
+}
+
+String Verbose::Colorize(rcString inMsg, Color inColor, Style inStyle)
+{
+  if (!ShouldUseColor())
+    return inMsg;
+
+  std::stringstream s;
+  s << "\033["
+    << inStyle
+    << ";"
+    << inColor
+    << "m"
+    << inMsg
+    << "\033[0m";
 
   return s.str();
 }

@@ -1,4 +1,5 @@
 #include "Timer.hpp"
+#include "Verbose.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -40,37 +41,67 @@ Timer::~Timer() {
   sMaxTimings[mTaskName] = std::max<double>(sMaxTimings[mTaskName], diff_time);
 }
 
-String Timer::GetReport(int precision)
+String Timer::GetReport(int inPrecision)
 {
-  std::stringstream report;
-  report << "Name\tMin\tMax\tAvg\tSum\tCalls" << std::endl << std::endl;
+  std::string report;
+  report += SpacePadding("Name",  25);
+  report += SpacePadding("Min",   8);
+  report += SpacePadding("Max",   8);
+  report += SpacePadding("Avg",   8);
+  report += SpacePadding("Sum",   8);
+  report += SpacePadding("Calls", 8);
+
+  report = Verbose::Colorize(report, Verbose::WHITE, Verbose::BOLD) + "\n\n";
   
   for (int i = 0, n = sTasks.size(); i < n; i++)
   {
-    if (sTaskCounters[sTasks[i]] == 0)
-      continue;
+    std::stringstream line;
+    String padded_line = SpacePadding(sTasks[i], 25);
+    line << std::setiosflags(std::ios::fixed)
+         << std::setprecision(inPrecision)
+         << sMinTimings[sTasks[i]];
+    padded_line += SpacePadding(line.str(), 8);
+    line.str("");
 
-    report << sTasks[i] << "\t";
-    report << std::setiosflags(std::ios::fixed)
-           << std::setprecision(precision)
-           << sMinTimings[sTasks[i]]
-           << "\t";
-    report << std::setiosflags(std::ios::fixed)
-           << std::setprecision(precision)
-           << sMaxTimings[sTasks[i]]
-           << "\t";
-    report << std::setiosflags(std::ios::fixed)
-           << std::setprecision(precision)
-           << (sSumTimings[sTasks[i]] / sTaskCounters[sTasks[i]])
-           << "\t";
-    report << std::setiosflags(std::ios::fixed)
-           << std::setprecision(precision)
-           << sSumTimings[sTasks[i]]
-           << "\t";
-    report << sTaskCounters[sTasks[i]]
-           << std::endl;
+    line << std::setiosflags(std::ios::fixed)
+         << std::setprecision(inPrecision)
+         << sMaxTimings[sTasks[i]];
+    padded_line += SpacePadding(line.str(), 8);
+    line.str("");
+
+    line << std::setiosflags(std::ios::fixed)
+         << std::setprecision(inPrecision)
+         << (sSumTimings[sTasks[i]] / sTaskCounters[sTasks[i]]);
+    padded_line += SpacePadding(line.str(), 8);
+    line.str("");
+
+    line << std::setiosflags(std::ios::fixed)
+         << std::setprecision(inPrecision)
+         << sSumTimings[sTasks[i]];
+    padded_line += SpacePadding(line.str(), 8);
+    line.str("");
+
+    line << sTaskCounters[sTasks[i]];
+    padded_line += SpacePadding(line.str(), 8);
+    line.str("");
+
+    Verbose::Color color = (i % 2) == 0 ? Verbose::WHITE : Verbose::CYAN;
+    report += Verbose::Colorize(padded_line, color) + "\n";
   }
 
-  report << std::endl << "Timings are in seconds" << std::endl;
-  return report.str();
+  report += Verbose::Colorize("\nTimings are in seconds...\n", Verbose::YELLOW);
+  return report;
+}
+
+String Timer::SpacePadding(rcString inString, int inSpaces)
+{
+  String padded = inString;
+  int n = inSpaces - inString.size();
+  if (n-1 < 0)
+    return padded.substr(0, padded.size()+n-4) + "... ";
+
+  for (int i = 0; i < n; i++)
+    padded += " ";
+
+  return padded;
 }

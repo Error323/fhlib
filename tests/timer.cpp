@@ -1,20 +1,22 @@
+#define ENABLE_PROFILING
+
 #include "../src/Timer.hpp"
 #include <iostream>
 
 void f() {
-  TIMER_FUNC();
+  PROFILE_FUNCTION();
   sleep(1);
 }
 
 void g() {
-  TIMER_FUNC();
+  PROFILE_FUNCTION();
   sleep(1);
 }
 
 int main(void)
 {
   {
-    TIMER_FUNC();
+    PROFILE_FUNCTION();
     f();
     g();
     g();

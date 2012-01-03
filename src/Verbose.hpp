@@ -24,15 +24,6 @@ public:
     FTL = (1 << 4)  // FATAL
   };
 
-  Verbose();
-  ~Verbose();
-
-  static Verbose* Instance();
-  static void SetVerbosity(Level inLevel);
-
-  Verbose& Print(rcString inMsg, Level inLevel=NTC);
-
-private:
   enum Style {
     REGULAR = 0,
     BOLD    = 1
@@ -49,18 +40,29 @@ private:
     WHITE   = 37
   };
 
+  Verbose();
+  ~Verbose();
+
+  static Verbose* Instance();
+  static void SetVerbosity(Level inLevel);
+  static String Colorize(rcString inMsg, Color inColor, Style inStyle=REGULAR);
+
+  Verbose& Print(rcString inMsg, Level inLevel=NTC);
+
+private:
   static Verbose                *sInstance;
   static Uint32                  sMinLevel;
   static Uint32                  sOutput;
   static std::map<Level, String> sLevels;
   static std::ofstream           sStream;
+  static bool                    sShouldUseColor;
 
   bool mIsStartOfLine;
-  bool mShouldUseColor;
 
   String Prefix(Level inLevel);
-  String Colorize(rcString inMsg, Level inLevel);
-  bool ShouldUseColor();
+  String ColorizeLevel(rcString inMsg, Level inLevel);
+
+  static bool ShouldUseColor();
 };
 
 
