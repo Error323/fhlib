@@ -14,13 +14,16 @@
 #define PROFILE(name)
 #endif
 
+#define NAME_SPACING 50
+#define CELL_SPACING 8
+
 class Timer {
     
 public:
   Timer(rcString inName);
   ~Timer();
 
-  static String GetReport(int inPrecision = 2);
+  static String GetReport(int inPrecision = 4);
   static String SpacePadding(rcString inString, int inSpaces);
 
 private:
@@ -31,8 +34,8 @@ private:
   static std::map<String, double> sMaxTimings;
 
   bool mIsInitialized;
-  time_t mStartTime;
-  time_t mEndTime;
+  clock_t mStartTime;
+  clock_t mEndTime;
   cString mTaskName;
 };
 
