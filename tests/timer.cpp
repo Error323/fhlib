@@ -1,5 +1,3 @@
-#define ENABLE_PROFILING
-
 #include "../src/Timer.hpp"
 #include <iostream>
 
