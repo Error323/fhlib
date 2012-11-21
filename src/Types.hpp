@@ -67,7 +67,6 @@ typedef char             Int8;
 DECLARE_HUNGARIAN(Int8)
 typedef unsigned char    Uint8;
 DECLARE_HUNGARIAN(Uint8)
-
 //------------Win: 32-bit/64-bit compatibility-------------
 #else
 typedef __int64          Int64;

@@ -9,16 +9,14 @@
 #define PROFILE_FUNCTION() PROFILE(__PRETTY_FUNCTION__)
 
 #ifdef ENABLE_PROFILING
-#define PROFILE(name) Timer t(name)
-#else
-#define PROFILE(name)
-#endif
+#define PROFILE(name) Timer ___t(name)
 
 #define NAME_SPACING 50
 #define CELL_SPACING 8
 
-class Timer {
-    
+class Timer
+{
+
 public:
   Timer(rcString inName);
   ~Timer();
@@ -33,10 +31,34 @@ private:
   static std::map<String, double> sMinTimings;
   static std::map<String, double> sMaxTimings;
 
+  inline double getRealTime() const
+  {
+    timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
+  }
+
+  inline double getCpuTime() const
+  {
+    timespec ts;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
+    return double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
+  }
+
   bool mIsInitialized;
-  clock_t mStartTime;
-  clock_t mEndTime;
+  double mStartTime;
+  double mEndTime;
   cString mTaskName;
 };
+
+#else
+#define PROFILE(name)
+class Timer
+{
+
+public:
+  static String GetReport(int inPrecision = 4) {(void) inPrecision; return "";}
+};
+#endif
 
 #endif

@@ -1,22 +1,25 @@
 #ifndef VERBOSE_HDR
 #define VERBOSE_HDR
 
-#include "Types.hpp"
-
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <map>
 
+#include "Types.hpp"
+
 class Verbose
 {
 public:
-  enum Output {
+  enum Output
+  {
     SCREEN = (1 << 0),
     LOG    = (1 << 1)
   };
 
-  enum Level {
+  enum Level
+  {
     DBG = (1 << 0), // DEBUG
     NTC = (1 << 1), // NOTICE
     WRN = (1 << 2), // WARNING
@@ -24,12 +27,14 @@ public:
     FTL = (1 << 4)  // FATAL
   };
 
-  enum Style {
+  enum Style
+  {
     REGULAR = 0,
     BOLD    = 1
   };
 
-  enum Color {
+  enum Color
+  {
     BLACK   = 30,
     RED     = 31,
     GREEN   = 32,
@@ -43,11 +48,11 @@ public:
   Verbose();
   ~Verbose();
 
-  static Verbose* Instance();
+  static Verbose *Instance();
   static void SetVerbosity(Level inLevel);
-  static String Colorize(rcString inMsg, Color inColor, Style inStyle=REGULAR);
+  static String Colorize(rcString inMsg, Color inColor, Style inStyle = REGULAR);
 
-  Verbose& Print(rcString inMsg, Level inLevel=NTC);
+  Verbose &Print(rcString inMsg, Level inLevel = NTC);
 
 private:
   static Verbose                *sInstance;
