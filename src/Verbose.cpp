@@ -164,7 +164,7 @@ bool Verbose::ShouldUseColor()
   // On non-Windows platforms, we rely on the TERM variable.
   const char *term = getenv("TERM");
 
-  if (term == NULL)
+  if (term == NULL || !isatty(1))
     return false;
 
   const bool term_supports_color =
