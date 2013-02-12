@@ -26,7 +26,7 @@ public:
 
 private:
   static std::vector<String> sTasks;
-  static std::map<String, Uint32> sTaskCounters;
+  static std::map<String, U32> sTaskCounters;
   static std::map<String, double> sSumTimings;
   static std::map<String, double> sMinTimings;
   static std::map<String, double> sMaxTimings;

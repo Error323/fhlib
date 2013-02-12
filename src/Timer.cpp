@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 std::vector<String>      Timer::sTasks;
-std::map<String, Uint32> Timer::sTaskCounters;
+std::map<String, U32> Timer::sTaskCounters;
 std::map<String, double> Timer::sSumTimings;
 std::map<String, double> Timer::sMinTimings;
 std::map<String, double> Timer::sMaxTimings;
