@@ -2,9 +2,8 @@
 #define DEBUGGER_HDR
 
 #ifndef NDEBUG
-#include <cstdio>
-#include <cstdlib>
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <execinfo.h>
 
 #define BREAKPOINT __builtin_trap()
